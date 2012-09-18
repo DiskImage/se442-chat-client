@@ -53,6 +53,7 @@ public class ChatClient
 {
    // Constants -----------------------------------------------------
    static final String TOPIC_SERVER = "chat-server";
+   static final String REMOTE_SERVER = "winterfel.student.rit.edu";
     
    // Attributes ----------------------------------------------------
    TopicServer server;
@@ -211,9 +212,9 @@ public class ChatClient
             // server = (TopicServer)new InitialContext(cfg).lookup();
             
   /**/     	System.setSecurityManager(new RMISecurityManager());
-  /**/     	Registry registry = LocateRegistry.getRegistry();
+  /**/     	Registry registry = LocateRegistry.getRegistry(REMOTE_SERVER);
   /**/      server = (TopicServer)registry.lookup(TOPIC_SERVER); 
-        	
+  
             
          } catch (NotBoundException e)
          {
