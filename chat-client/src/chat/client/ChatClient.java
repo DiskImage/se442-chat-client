@@ -53,7 +53,7 @@ public class ChatClient
 {
    // Constants -----------------------------------------------------
    static final String TOPIC_SERVER = "chat-server";
-   static final String REMOTE_SERVER = "winterfel.student.rit.edu";
+   static final String REMOTE_SERVER = "129.21.109.244"; //"winterfel.student.rit.edu";
     
    // Attributes ----------------------------------------------------
    TopicServer server;
