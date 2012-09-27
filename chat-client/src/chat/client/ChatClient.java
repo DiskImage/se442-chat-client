@@ -53,7 +53,7 @@ public class ChatClient
 {
    // Constants -----------------------------------------------------
    static final String TOPIC_SERVER = "chat-server";
-   static final String REMOTE_SERVER = "129.21.109.244"; //"winterfel.student.rit.edu";
+   static final String REMOTE_SERVER = "129.21.108.223"; //"winterfel.student.rit.edu";
     
    // Attributes ----------------------------------------------------
    TopicServer server;
@@ -91,14 +91,26 @@ public class ChatClient
       // Create test clients and subscribe them to the default topic
       Collection clients = new ArrayList();
       ChatClient client = null;
+      // The following lines that get a time stamp of when the code starts logging
+      // in users.
+      long loginStart = System.currentTimeMillis();
       for (int i = 0; i < clientCount; i++)
       {
          client = new ChatClient();
          client.login("Hello"+i);
          client.subscribe(((TopicInfo)client.getTopics().getElementAt(topicIndex)));
          clients.add(client);
+         
+         // The following commented lines of code tests where the client gets logged
+         // in and immediately sends a message to the server, then the next client
+         // gets logged in and subscribes to the given topic.
+         
+         //Message message = new Message("Hello"+i,"Text","Hello "+i+"!");
+         //client.publishMessage(message);
+         
          System.out.println("Client "+i+" created");
       }
+      long loginStop = System.currentTimeMillis();
       
       System.out.println("Clients created");
       
@@ -113,23 +125,44 @@ public class ChatClient
       }
       long end = System.currentTimeMillis();
       long time = end - start;
+      
       System.out.println("Test done");
       
-
+      // The following code block iterates through all of the clients then
+      // switches the topic of the client to the the third topic in the topic list.
+      // There are time stamps to calculate the response time of switching topics.
+      /*Iterator iter1 = clients.iterator();
+      long topicStart = System.currentTimeMillis();
+      int i = 0;
+      while (iter1.hasNext())
+      {
+    	 client = (ChatClient)iter1.next();
+         //client.subscribe(((TopicInfo)client.getTopics().getElementAt(2)));
+      	 i++;
+      }
+      long topicStop = System.currentTimeMillis();
+      */
       // Log off test clients
       Iterator iter = clients.iterator();
+      long logoutStart = System.currentTimeMillis();
       while (iter.hasNext())
       {
          client = (ChatClient)iter.next();
          client.logout();
       }
+      long logoutStop = System.currentTimeMillis();
       
       System.out.println("Clients removed");
       
       // Show results
       System.out.println("Total time:"+time);
+      // The following lines just output the response times for login,
+      // logout and switching topics.
+      //System.out.println("Total login time:"+ (loginStop - loginStart));
+      //System.out.println("Total logout time:"+ (logoutStop - logoutStart));
+      //System.out.println("Total topic switch time:"+ (topicStop - topicStart));
       System.out.println("Nr of clients:"+clientCount);
-      System.out.println("Total nr of messages:"+(messageCount*(clientCount+1)));
+      System.out.println("Total nr of messages:"+(messageCount*clientCount));
       System.out.println("Time/message:"+(time/messageCount));
       System.out.println("Time/(message*nr of test clients):"+(time/(messageCount*clientCount)));
       System.out.println("Time/(message*(nr of test clients + 1)):"+(time/(messageCount*(clientCount+1))));
